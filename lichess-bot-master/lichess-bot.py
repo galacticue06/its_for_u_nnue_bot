@@ -229,6 +229,7 @@ def choose_first_move(engine, board, ponder):
 
 
 def get_book_move(board, polyglot_cfg):
+    #time.sleep(.03)
     if not polyglot_cfg.get("enabled") or len(board.move_stack) > polyglot_cfg.get("max_depth", 8) * 2 - 1:
         return None
 
@@ -266,37 +267,89 @@ def get_book_move(board, polyglot_cfg):
     return None
 
 
+##def choose_move(engine, board, game, ponder, start_time, move_overhead):
+##    global total_time, ping_time
+##    wtime = game.state["wtime"]
+##    btime = game.state["btime"]
+##    pre_move_time = int((time.perf_counter_ns() - start_time) / 1000000)
+##    div = 4
+##    if board.turn == chess.WHITE:
+##        if total_time == 0:
+##            total_time = wtime+1
+##        if wtime > btime and wtime > 5000:
+##            max_time = (wtime - btime)*(div/(div+1))
+##        elif wtime < 500:
+##            max_time = .01
+##            ponder = 0 
+##        elif wtime < 1500:
+##            max_time = 5
+##        elif wtime < 5000:
+##            max_time = 50
+##        else:
+##            max_time = (total_time/90)+game.state["winc"]-ping_time
+##            
+##        wtime = max(0, wtime - move_overhead - pre_move_time)
+##        
+##    else:
+##        if total_time == 0:
+##            total_time = btime+1
+##        if btime > wtime and btime > 5000:
+##            max_time = (btime - wtime)*(div/(div+1))
+##        elif btime < 500:
+##            max_time = .01
+##            ponder = 0 
+##        elif btime < 1500:
+##            max_time = 5
+##        elif btime < 5000:
+##            max_time = 50
+##        else:
+##            max_time = (total_time/90)+game.state["binc"]-ping_time
+##        btime = max(0, btime - move_overhead - pre_move_time)
+##    logger.info("Searching for wtime {} btime {}".format(wtime, btime))
+##    return engine.search_with_ponder(board, wtime, btime, game.state["winc"], game.state["binc"], ponder, max_time/1000)
+
 def choose_move(engine, board, game, ponder, start_time, move_overhead):
     global total_time, ping_time
     wtime = game.state["wtime"]
     btime = game.state["btime"]
     pre_move_time = int((time.perf_counter_ns() - start_time) / 1000000)
+    div = 4
     if board.turn == chess.WHITE:
         if total_time == 0:
             total_time = wtime+1
-        if wtime > btime and wtime > 5000:
-            max_time = (wtime - btime)*(4/5)
-##        elif wtime < 2000:
-##            max_time = 5
+        if (wtime - btime) > 3000 and wtime > game.state["winc"]:
+            max_time = (wtime - btime)*(div/(div+1))/6+game.state["winc"]
+        elif wtime > btime and wtime > 5000:
+            max_time = (wtime - btime)*(div/(div+1))+game.state["winc"]
+        elif wtime < 500:
+            max_time = 0
+            ponder = 0 
+        elif wtime < 1500:
+            max_time = 5
         elif wtime < 5000:
             max_time = 50
         else:
             max_time = (total_time/90)+game.state["winc"]-ping_time
             
-        #wtime = max(0, wtime - move_overhead - pre_move_time)
+        wtime = max(0, wtime - move_overhead - pre_move_time)
         
     else:
         if total_time == 0:
             total_time = btime+1
-        if btime > wtime and btime > 5000:
-            max_time = (btime - wtime)*(4/5)
-##        elif btime < 2000:
-##            max_time = 5
+        if (btime - wtime) > 3000 and btime > game.state["binc"]:
+            max_time = (btime - wtime)*(div/(div+1))/6+game.state["binc"]
+        elif btime > wtime and btime > 5000:
+            max_time = (btime - wtime)*(div/(div+1))+game.state["binc"]
+        elif btime < 500:
+            max_time = 0
+            ponder = 0 
+        elif btime < 1500:
+            max_time = 5
         elif btime < 5000:
             max_time = 50
         else:
             max_time = (total_time/90)+game.state["binc"]-ping_time
-        #btime = max(0, btime - move_overhead - pre_move_time)
+        btime = max(0, btime - move_overhead - pre_move_time)
     logger.info("Searching for wtime {} btime {}".format(wtime, btime))
     return engine.search_with_ponder(board, wtime, btime, game.state["winc"], game.state["binc"], ponder, max_time/1000)
 
