@@ -5,7 +5,7 @@ engine:                      # Engine settings.
   dir: "./engines/"          # Directory containing engines, relative to this project.
   #name: "stockfish.exe"
   #name: "sf_c.exe"
-  name: "sf_haswell.exe"        # Binary name of the engine to use.
+  name: "linux_sf"        # Binary name of the engine to use.
   #name: "stockfish_tuned.exe"
   protocol: "uci"            # "uci" or "xboard"
   ponder: true               # Think on opponent's time.
