@@ -10,7 +10,7 @@ engine:                      # engine settings
     enabled: true           # activate polyglot book
     book:
       standard: # list of book file paths for variant standard
-        - engines/book1.bin
+        - ./book1.bin
       min_weight: 0            # does not select moves with weight below min_weight (min 0, max: 65535)
     selection: "best_move" # move selection is one of "weighted_random", "uniform_random" or "best_move" (but not below the min_weight in 2. and 3. case)
     max_depth:  999             # half move max depth
