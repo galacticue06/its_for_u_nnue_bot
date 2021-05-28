@@ -31,6 +31,21 @@ ping_time = 95
 
 total_time = 0
 
+def p_count(board):
+    pcs = [board.piece_at(chess.parse_square(i)) for i in chess.SQUARE_NAMES]
+    for i in range(pcs.count(None)):
+        pcs.remove(None)
+    return len(pcs)
+
+def is_saccable(board):
+    pcs = [str(board.piece_at(chess.parse_square(i))) for i in chess.SQUARE_NAMES]
+    for i in range(pcs.count('None')):
+        pcs.remove('None')
+    pcs.sort()
+    string = "".join(pcs)
+    equals = ["KNkn","KBkn","KNkb"]
+    return (True if string in equals else False)
+
 def signal_handler(signal, frame):
     global terminated
     logger.debug("Recieved SIGINT. Terminating client.")
@@ -171,6 +186,7 @@ def play_game(li, game_id, control_queue, engine_factory, user_profile, config, 
             if first_move:
                 upd = game.state
                 first_move = False
+                #conversation.react(ChatLine(upd), game, foo=True)
             else:
                 binary_chunk = next(lines)
                 upd = json.loads(binary_chunk.decode('utf-8')) if binary_chunk else None
@@ -350,6 +366,8 @@ def choose_move(engine, board, game, ponder, start_time, move_overhead):
         else:
             max_time = (total_time/90)+game.state["binc"]-ping_time
         btime = max(0, btime - move_overhead - pre_move_time)
+    if p_count(board) <= 5:
+        max_time = 5
     logger.info("Searching for wtime {} btime {}".format(wtime, btime))
     return engine.search_with_ponder(board, wtime, btime, game.state["winc"], game.state["binc"], ponder, max_time/1000)
 

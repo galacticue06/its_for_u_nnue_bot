@@ -120,6 +120,9 @@ class UCIEngine(EngineWrapper):
     def stop(self):
         self.engine.protocol.send_line("stop")
 
+##    def ponderhit(self):
+##        self.engine.protocol.send_line("ponderhit")
+
     def get_opponent_info(self, game):
         name = game.opponent.name
         if name and "UCI_Opponent" in self.engine.protocol.config:
