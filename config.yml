@@ -1,71 +1,24 @@
-token: "FMnN93zRX0Ek6GR1"    # lichess OAuth2 Token hahayoulost06
-#token: "FrfLRHAfseoBcvJb"    # lichess OAuth2 Token NecromancerBot
+token: "xxxxxxxxxxxxxxxx"    # lichess OAuth2 Token hahayoulost06
 url: "https://lichess.org/"  # lichess base URL
 
 engine:                      # engine settings
   dir: "./engines/"          # dir containing engines, relative to this project
-  #name: "stockfish.exe"        # binary name of the engine to use
-  #name: "mv_c.exe"        # fairy sf
-  #name: "fairy-stockfish-largeboard_x86-64.exe"  
-  name: "sf_haswell.exe"     #haswell???
-  #name: "bf.exe"     #brainfish???
-  #name: "sfbmi.exe"     #bmi???
-  #name: "sf+2.68.exe"        #+2.68 elo??????
+  name: "stockfish.exe"     #haswell???
   protocol: "uci"            # "uci" or "xboard"
   uci_ponder: true           # think on opponent time; only works if "protocol" is "uci"
   polyglot:
     enabled: true           # activate polyglot book
     book:
       standard: # list of book file paths for variant standard
-        #- engines/book.bin
-        - engines/Cerebellum3Merge.bin
-        #- engines/fruit.bin
-        - engines/komodo.bin
-        #- engines/mainbook.bin
-        - engines/oofer.bin
-        - engines/Perfect2017.bin
-        - engines/Performance.bin
-        - engines/ProDeo.bin
-        #- engines/search.bin
-        - engines/sf12.bin
-        #- engines/tourbook.bin
-        - engines/usb.bin
-        - engines/Echidna.bin
-        #- engines/varied.bin
-      #crazyhouse: "engines/zbook.bin"
-      #atomic: # list of book file paths for variant atomic
-       # - engines/atomic.pgn
-#        - engines/atomicbook2.bin
-#      etc.
-#      use the same pattern for giveaway, crazyhouse, horde, kingofthehill, racingkings, 3check as well
-    min_weight: 0            # does not select moves with weight below min_weight (min 0, max: 65535)
+        - engines/book1.bin
+      min_weight: 0            # does not select moves with weight below min_weight (min 0, max: 65535)
     selection: "best_move" # move selection is one of "weighted_random", "uniform_random" or "best_move" (but not below the min_weight in 2. and 3. case)
     max_depth:  999             # half move max depth
-    #max_depth: 24             # half move max depth(stabiilized one)
-#  engine_options:            # any custom command line params to pass to the engine
-#    cpuct: 3.8
   uci_options:               # arbitrary UCI options passed to the engine
     Move Overhead: 0       # increase if your bot flags games too often
-    Threads: 4               # max CPU threads the engine can use
+    Threads: 2               # max CPU threads the engine can use
     Hash: 256               # max memory (in megabytes) the engine can allocate
-    #Use NNUE: true
-    #EvalFile: "./engines/nn-62ef826d1a6d.nnue"
-    SyzygyPath: "./engines/syzygy"
-    SyzygyProbeDepth: 3
-    #Contempt: 30
     Contempt: 0
-#   go_commands:             # additional options to pass to the UCI go command
-#     nodes: 1               # Search so many nodes only.
-#     depth: 5               # Search depth ply only.
-#     movetime: 1000         # Integer. Search exactly movetime milliseconds.
-# xboard_options:            # arbitrary xboard options passed to the engine
-#   cores: "4"
-#   memory: "4096"
-#   egtpath:                 # dir containing egtb, relative to this project
-#     gaviota: "Gaviota path"
-#     nalimov: "Nalimov Path"
-#     scorpio: "Scorpio Path"
-#     syzygy: "Syzygy Path"
   silence_stderr: true      # some engines (yes you, leela) are very noisy
 
 abort_time: 20               # time to abort a game in seconds when there is no activity
@@ -100,4 +53,4 @@ challenge:                   # incoming challenges
 #   - correspondence
   modes:                     # game modes to accept
     - casual                 # unrated games
-#    - rated                  # rated games - must comment if the engine doesn't try to win
+    - rated                  # rated games - must comment if the engine doesn't try to win
